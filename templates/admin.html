@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Администрирование | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="section page-card">
+    <h1>Панель администратора</h1>
+    <p>Здесь администратор может перейти в системную админку и управлять данными проекта.</p>
+    <div class="admin-actions">
+        <a class="btn btn-primary" href="{{ url_for('admin_panel.index') }}">Открыть Flask-Admin</a>
+    </div>
+</section>
+{% endblock %}

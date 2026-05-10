@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-card">
+        <h1>Регистрация</h1>
+        <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.name.label(class_='form-label') }}
+                {{ form.name(class_='form-control') }}
+                {% for error in form.name.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label(class_='form-label') }}
+                {{ form.email(class_='form-control') }}
+                {% for error in form.email.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <span class="form-label">{{ form.role.label.text }}</span>
+                <div class="radio-list">
+                    {% for option in form.role %}
+                        <label class="radio-item">{{ option() }} <span>{{ option.label.text }}</span></label>
+                    {% endfor %}
+                </div>
+                {% for error in form.role.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label(class_='form-label') }}
+                {{ form.password(class_='form-control') }}
+                {% for error in form.password.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.confirm_password.label(class_='form-label') }}
+                {{ form.confirm_password(class_='form-control') }}
+                {% for error in form.confirm_password.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                {{ form.submit(class_='btn btn-primary') }}
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

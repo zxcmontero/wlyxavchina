@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Отклики на вакансию | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-head">
+        <div>
+            <h1>Отклики на вакансию</h1>
+            <p>{{ vacancy.title }} | {{ vacancy.company_name }}</p>
+        </div>
+        <a class="btn btn-secondary" href="{{ url_for('employer_vacancies') }}">К списку вакансий</a>
+    </div>
+
+    {% if applications %}
+        <div class="card-grid single-column">
+            {% for application in applications %}
+                <article class="card application-card">
+                    <div class="section-head compact-head">
+                        <div>
+                            <h2>{{ application.applicant.name }}</h2>
+                            <p class="card-meta">Отклик от {{ application.created_at.strftime('%d.%m.%Y') }}</p>
+                        </div>
+                        <span class="status-badge status-on">{{ application.status }}</span>
+                    </div>
+
+                    <div class="detail-block">
+                        <h3>Резюме</h3>
+                        <p><strong>Должность:</strong> {{ application.resume.title }}</p>
+                        <p class="pre-line"><strong>О себе:</strong> {{ application.resume.about }}</p>
+                        <p class="pre-line"><strong>Навыки:</strong> {{ application.resume.skills }}</p>
+                        <p class="pre-line"><strong>Опыт:</strong> {{ application.resume.experience }}</p>
+                        <p class="pre-line"><strong>Контакты:</strong> {{ application.resume.contacts }}</p>
+                    </div>
+
+                    <div class="detail-block">
+                        <h3>Сопроводительное письмо</h3>
+                        <p class="pre-line">{{ application.cover_letter or 'Не указано' }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>На эту вакансию пока нет откликов.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

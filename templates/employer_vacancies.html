@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои вакансии | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-head">
+        <h1>Мои вакансии</h1>
+        <a class="btn btn-primary" href="{{ url_for('create_vacancy') }}">Добавить вакансию</a>
+    </div>
+
+    {% if vacancies %}
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Город</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vacancy in vacancies %}
+                        <tr>
+                            <td>{{ vacancy.title }}</td>
+                            <td>{{ vacancy.location }}</td>
+                            <td>
+                                {% if vacancy.is_active %}
+                                    <span class="status-badge status-on">Активна</span>
+                                {% else %}
+                                    <span class="status-badge status-off">Неактивна</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="action-row">
+                                    <a class="btn btn-light btn-small" href="{{ url_for('edit_vacancy', vacancy_id=vacancy.id) }}">Редактировать</a>
+                                    <a class="btn btn-light btn-small" href="{{ url_for('vacancy_applications', vacancy_id=vacancy.id) }}">Отклики</a>
+                                    <form method="post" action="{{ url_for('delete_vacancy', vacancy_id=vacancy.id) }}" class="inline-form js-confirm-delete" data-confirm="Удалить вакансию?">
+                                        <button class="btn btn-danger btn-small" type="submit">Удалить</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>У вас пока нет вакансий.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

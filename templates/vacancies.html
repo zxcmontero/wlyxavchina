@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Вакансии | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="section page-banner">
+    <div class="section-head section-head-stack">
+        <div>
+            <span class="section-kicker">Выбирайте спокойно</span>
+            <h1>Вакансии, на которые можно откликнуться уже сейчас</h1>
+        </div>
+        <p class="section-text">Каждая карточка показывает самое важное: компанию, город, зарплату и быстрый переход к подробностям.</p>
+    </div>
+
+    <div class="banner-stats">
+        <div class="banner-stat">
+            <strong>{{ vacancies|length }}</strong>
+            <span>активных вакансий</span>
+        </div>
+        <div class="banner-stat">
+            <strong>Без дублей</strong>
+            <span>нельзя откликнуться на одну вакансию дважды</span>
+        </div>
+        <div class="banner-stat">
+            <strong>Понятно</strong>
+            <span>без лишних фильтров и перегруза интерфейса</span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2>Список вакансий</h2>
+        <span class="results-count">Найдено: {{ vacancies|length }}</span>
+    </div>
+
+    {% if vacancies %}
+        <div class="card-grid">
+            {% for vacancy in vacancies %}
+                <article class="card vacancy-card">
+                    <div class="vacancy-card-top">
+                        <span class="badge-chip">{{ vacancy.location }}</span>
+                        <span class="badge-chip badge-chip-muted">{{ vacancy.company_name }}</span>
+                    </div>
+                    <h2>{{ vacancy.title }}</h2>
+                    <p><strong>Зарплата:</strong> {{ vacancy.salary }}</p>
+                    <p class="vacancy-excerpt">{{ vacancy.description[:180] }}{% if vacancy.description|length > 180 %}...{% endif %}</p>
+                    <div class="vacancy-card-footer">
+                        <a class="btn btn-light" href="{{ url_for('vacancy_detail', vacancy_id=vacancy.id) }}">Подробнее</a>
+                        <span class="card-meta">{{ vacancy.created_at.strftime('%d.%m.%Y') }}</span>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Сейчас нет активных вакансий.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

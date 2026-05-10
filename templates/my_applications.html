@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои отклики | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-head">
+        <h1>Мои отклики</h1>
+    </div>
+
+    {% if applications %}
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Вакансия</th>
+                        <th>Компания</th>
+                        <th>Статус</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('vacancy_detail', vacancy_id=application.vacancy.id) }}">
+                                    {{ application.vacancy.title }}
+                                </a>
+                            </td>
+                            <td>{{ application.vacancy.company_name }}</td>
+                            <td>{{ application.status }}</td>
+                            <td>{{ application.created_at.strftime('%d.%m.%Y') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Вы пока не откликались на вакансии.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Кадровое агентство{% endblock %}</title>
+    <meta name="description" content="Учебный сайт кадрового агентства для соискателей, работодателей и администратора.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="page-decor page-decor-left"></div>
+    <div class="page-decor page-decor-right"></div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand-block">
+                <span class="brand-kicker">Найти. Откликнуться. Нанять.</span>
+                <a class="logo" href="{{ url_for('index') }}">Кадровое агентство</a>
+            </div>
+
+            <div class="header-panel">
+                <nav class="site-nav">
+                    <a class="nav-link {% if request.endpoint == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">Главная</a>
+                    <a class="nav-link {% if request.endpoint == 'about' %}is-active{% endif %}" href="{{ url_for('about') }}">О компании</a>
+                    <a class="nav-link {% if request.endpoint == 'contacts' %}is-active{% endif %}" href="{{ url_for('contacts') }}">Контакты</a>
+                    <a class="nav-link {% if request.endpoint in ['vacancies', 'vacancy_detail'] %}is-active{% endif %}" href="{{ url_for('vacancies') }}">Вакансии</a>
+
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.role == 'applicant' %}
+                            <a class="nav-link {% if request.endpoint in ['my_resume', 'create_resume', 'edit_resume'] %}is-active{% endif %}" href="{{ url_for('my_resume') }}">Мое резюме</a>
+                            <a class="nav-link {% if request.endpoint == 'my_applications' %}is-active{% endif %}" href="{{ url_for('my_applications') }}">Мои отклики</a>
+                        {% elif current_user.role == 'employer' %}
+                            <a class="nav-link {% if request.endpoint in ['employer_vacancies', 'create_vacancy', 'edit_vacancy', 'vacancy_applications'] %}is-active{% endif %}" href="{{ url_for('employer_vacancies') }}">Мои вакансии</a>
+                        {% elif current_user.role == 'admin' %}
+                            <a class="nav-link {% if request.endpoint == 'admin_dashboard' %}is-active{% endif %}" href="{{ url_for('admin_dashboard') }}">Админ</a>
+                        {% endif %}
+                    {% endif %}
+                </nav>
+
+                <div class="header-actions">
+                    {% if current_user.is_authenticated %}
+                        <span class="nav-user">{{ current_user.name }}</span>
+                        <a class="btn btn-ghost" href="{{ url_for('logout') }}">Выход</a>
+                    {% else %}
+                        <a class="btn btn-ghost" href="{{ url_for('login') }}">Вход</a>
+                        <a class="btn btn-primary" href="{{ url_for('register') }}">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-list">
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <p class="footer-title">Кадровое агентство</p>
+                <p>Живой и понятный сервис для поиска работы и сотрудников без лишней путаницы.</p>
+            </div>
+            <div class="footer-links">
+                <a href="{{ url_for('vacancies') }}">Смотреть вакансии</a>
+                <a href="{{ url_for('about') }}">О компании</a>
+                <a href="{{ url_for('contacts') }}">Контакты</a>
+            </div>
+            <div>
+                <p>Учебный проект, {{ current_year }}</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

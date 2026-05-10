@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ vacancy.title }} | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="detail-layout">
+    <article class="section page-card detail-main-card">
+        <div class="detail-head">
+            <div>
+                <div class="vacancy-card-top">
+                    <span class="badge-chip">{{ vacancy.location }}</span>
+                    <span class="badge-chip badge-chip-muted">{{ vacancy.company_name }}</span>
+                </div>
+                <h1>{{ vacancy.title }}</h1>
+                <p class="card-meta">Работодатель: {{ vacancy.employer.name }}</p>
+            </div>
+            {% if not vacancy.is_active %}
+                <span class="status-badge status-off">Неактивна</span>
+            {% endif %}
+        </div>
+
+        <div class="detail-summary-grid">
+            <div class="summary-item">
+                <span>Зарплата</span>
+                <strong>{{ vacancy.salary }}</strong>
+            </div>
+            <div class="summary-item">
+                <span>Город</span>
+                <strong>{{ vacancy.location }}</strong>
+            </div>
+            <div class="summary-item">
+                <span>Дата публикации</span>
+                <strong>{{ vacancy.created_at.strftime('%d.%m.%Y') }}</strong>
+            </div>
+        </div>
+
+        <div class="detail-block detail-surface">
+            <h2>Описание вакансии</h2>
+            <p class="pre-line">{{ vacancy.description }}</p>
+        </div>
+
+        <div class="detail-block detail-surface">
+            <h2>Требования к кандидату</h2>
+            <p class="pre-line">{{ vacancy.requirements }}</p>
+        </div>
+    </article>
+
+    <aside class="detail-sidebar">
+        <div class="page-card sidebar-card">
+            <h2>Быстрый план</h2>
+            <ul class="sidebar-list">
+                <li>Изучите условия вакансии.</li>
+                <li>Проверьте, что у вас заполнено резюме.</li>
+                <li>Отправьте отклик и следите за статусом.</li>
+            </ul>
+        </div>
+
+        {% if current_user.is_authenticated and current_user.role == 'applicant' %}
+            <div class="form-card compact-card application-panel">
+                <h2>Отклик на вакансию</h2>
+
+                {% if already_applied %}
+                    <p>Вы уже откликались на эту вакансию.</p>
+                {% elif not current_user.resume %}
+                    <p>Сначала создайте резюме, чтобы отправить отклик.</p>
+                    <a class="btn btn-primary" href="{{ url_for('create_resume') }}">Создать резюме</a>
+                {% elif application_form %}
+                    <form method="post" action="{{ url_for('apply_to_vacancy', vacancy_id=vacancy.id) }}">
+                        {{ application_form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ application_form.cover_letter.label(class_='form-label') }}
+                            {{ application_form.cover_letter(class_='form-control', rows='5') }}
+                            {% for error in application_form.cover_letter.errors %}
+                                <div class="form-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {{ application_form.submit(class_='btn btn-primary btn-wide') }}
+                    </form>
+                {% endif %}
+            </div>
+        {% elif not current_user.is_authenticated %}
+            <div class="form-card compact-card application-panel">
+                <h2>Отклик на вакансию</h2>
+                <p>Чтобы откликнуться, войдите в систему под аккаунтом соискателя.</p>
+                <a class="btn btn-primary btn-wide" href="{{ url_for('login') }}">Войти</a>
+            </div>
+        {% endif %}
+    </aside>
+</section>
+{% endblock %}

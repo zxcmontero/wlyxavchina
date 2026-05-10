@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход | Кадровое агентство{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-card">
+        <h1>Вход</h1>
+        <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.email.label(class_='form-label') }}
+                {{ form.email(class_='form-control') }}
+                {% for error in form.email.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label(class_='form-label') }}
+                {{ form.password(class_='form-control') }}
+                {% for error in form.password.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="checkbox-row">
+                {{ form.remember() }}
+                {{ form.remember.label }}
+            </div>
+
+            <div class="form-actions">
+                {{ form.submit(class_='btn btn-primary') }}
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

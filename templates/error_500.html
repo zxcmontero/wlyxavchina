@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Ошибка 500{% endblock %}
+
+{% block content %}
+<section class="section page-card error-card">
+    <h1>Ошибка 500</h1>
+    <p>Произошла внутренняя ошибка сервера.</p>
+    <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+</section>
+{% endblock %}
