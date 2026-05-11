@@ -13,7 +13,7 @@
     </div>
 
     {% if applications %}
-        <div class="card-grid single-column dashboard-list">
+        <div class="card-grid single-column dashboard-list applications-dashboard">
             {% for application in applications %}
                 <article class="card application-card dashboard-card">
                     <div class="dashboard-card-top">
@@ -30,7 +30,14 @@
                         </a>
                     </h2>
 
-                    <div class="dashboard-card-actions">
+                    <div class="application-card-meta">
+                        <span class="badge-chip">{{ application.vacancy.salary }}</span>
+                        <span class="badge-chip badge-chip-muted">{{ application.vacancy.location }}</span>
+                    </div>
+
+                    <p class="dashboard-card-excerpt application-card-excerpt">{{ application.vacancy.description[:165] }}{% if application.vacancy.description|length > 165 %}...{% endif %}</p>
+
+                    <div class="dashboard-card-actions application-card-actions">
                         <a class="btn btn-light" href="{{ url_for('vacancy_detail', vacancy_id=application.vacancy.id) }}">Открыть вакансию</a>
                     </div>
                 </article>

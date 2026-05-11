@@ -3,39 +3,55 @@
 {% block title %}Отклики на вакансию | Кадровое агентство{% endblock %}
 
 {% block content %}
-<section class="section">
+<section class="section vacancy-applications-section">
     <div class="section-head">
         <div>
             <h1>Отклики на вакансию</h1>
-            <p>{{ vacancy.title }} | {{ vacancy.company_name }}</p>
+            <p class="section-text">{{ vacancy.title }} | {{ vacancy.company_name }}</p>
         </div>
-        <a class="btn btn-secondary" href="{{ url_for('employer_vacancies') }}">К списку вакансий</a>
+        <div class="section-head-actions">
+            <span class="results-count">Всего: {{ applications|length }}</span>
+            <a class="btn btn-secondary" href="{{ url_for('employer_vacancies') }}">К списку вакансий</a>
+        </div>
     </div>
 
     {% if applications %}
-        <div class="card-grid single-column">
+        <div class="card-grid single-column dashboard-list vacancy-applications-list">
             {% for application in applications %}
-                <article class="card application-card">
-                    <div class="section-head compact-head">
+                <article class="card application-card dashboard-card employer-application-card">
+                    <div class="dashboard-card-top">
                         <div>
                             <h2>{{ application.applicant.name }}</h2>
-                            <p class="card-meta">Отклик от {{ application.created_at.strftime('%d.%m.%Y') }}</p>
+                            <p class="card-meta">{{ application.resume.title }} | Отклик от {{ application.created_at.strftime('%d.%m.%Y') }}</p>
                         </div>
-                        <span class="status-badge status-on">{{ status_label(application.status) }}</span>
+                        <span class="status-badge dashboard-status">{{ status_label(application.status) }}</span>
                     </div>
 
-                    <div class="detail-block">
-                        <h3>Резюме</h3>
-                        <p><strong>Должность:</strong> {{ application.resume.title }}</p>
-                        <p class="pre-line"><strong>О себе:</strong> {{ application.resume.about }}</p>
-                        <p class="pre-line"><strong>Навыки:</strong> {{ application.resume.skills }}</p>
-                        <p class="pre-line"><strong>Опыт:</strong> {{ application.resume.experience }}</p>
-                        <p class="pre-line"><strong>Контакты:</strong> {{ application.resume.contacts }}</p>
-                    </div>
+                    <div class="application-preview-grid">
+                        <div class="detail-surface application-preview-card application-preview-card-wide">
+                            <span class="section-kicker">О себе</span>
+                            <p class="pre-line">{{ application.resume.about }}</p>
+                        </div>
 
-                    <div class="detail-block">
-                        <h3>Сопроводительное письмо</h3>
-                        <p class="pre-line">{{ application.cover_letter or 'Не указано' }}</p>
+                        <div class="detail-surface application-preview-card">
+                            <span class="section-kicker">Навыки</span>
+                            <p class="pre-line">{{ application.resume.skills }}</p>
+                        </div>
+
+                        <div class="detail-surface application-preview-card">
+                            <span class="section-kicker">Опыт</span>
+                            <p class="pre-line">{{ application.resume.experience }}</p>
+                        </div>
+
+                        <div class="detail-surface application-preview-card application-preview-card-wide">
+                            <span class="section-kicker">Контакты</span>
+                            <p class="pre-line">{{ application.resume.contacts }}</p>
+                        </div>
+
+                        <div class="detail-surface application-preview-card application-preview-card-wide">
+                            <span class="section-kicker">Сопроводительное письмо</span>
+                            <p class="pre-line">{{ application.cover_letter or 'Не указано' }}</p>
+                        </div>
                     </div>
                 </article>
             {% endfor %}

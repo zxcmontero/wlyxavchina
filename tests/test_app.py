@@ -24,7 +24,7 @@ def test_public_pages_are_available(client):
 def test_public_pages_render_updated_key_content(client):
     expectations = {
         "/": ["Работа и подбор персонала без скучной бюрократии", "Свежие вакансии"],
-        "/about": ["Кадровое агентство без лишней сложности", "Основные сценарии покрыты от входа до отклика"],
+        "/about": ["Подбираем специалистов для офисных и операционных команд", "Короткий бриф"],
         "/contacts": ["Связаться без лишних кругов", "Подготовьте вопрос в одном сообщении"],
         "/vacancies": ["Вакансии, на которые можно откликнуться уже сейчас", "Найдено:"],
     }
@@ -36,6 +36,19 @@ def test_public_pages_render_updated_key_content(client):
         assert response.status_code == 200
         for snippet in snippets:
             assert snippet in html
+
+
+def test_contacts_page_renders_equalized_contact_sections(client):
+    response = client.get("/contacts")
+    html = response.get_data(as_text=True)
+
+    assert response.status_code == 200
+    assert 'class="card-grid info-cards-grid contact-cards-grid"' in html
+    assert 'class="section section-soft contacts-help-section"' in html
+    assert "Офис для связи" in html
+    assert "Быстрый звонок" in html
+    assert "Сообщение с деталями" in html
+    assert "Подготовьте вопрос в одном сообщении" in html
 
 
 def test_base_layout_renders_accessible_navigation_fallback(client):
@@ -158,6 +171,71 @@ def test_application_pages_render_friendly_status_labels(client, app_instance):
     assert re.search(r">\s*review\s*<", employer_html) is None
 
 
+def test_role_forms_render_balanced_editor_layouts(client):
+    login(client, "applicant@example.com", "applicant123")
+    resume_response = client.get("/resume/create", follow_redirects=True)
+    resume_html = resume_response.get_data(as_text=True)
+
+    assert resume_response.status_code == 200
+    assert 'class="form-shell editor-form-shell"' in resume_html
+    assert 'class="form-pane form-pane-balanced"' in resume_html
+    assert 'class="form-pane-grid"' in resume_html
+    assert "Подсказка" in resume_html
+
+    logout(client)
+    login(client, "employer@example.com", "employer123")
+    vacancy_response = client.get("/employer/vacancies/create", follow_redirects=True)
+    vacancy_html = vacancy_response.get_data(as_text=True)
+
+    assert vacancy_response.status_code == 200
+    assert 'class="form-shell editor-form-shell"' in vacancy_html
+    assert 'class="form-pane-grid"' in vacancy_html
+    assert "Публикация" in vacancy_html
+    assert "Описание для кандидата" in vacancy_html
+
+
+def test_employer_applications_page_renders_structured_application_preview(client, app_instance):
+    with app_instance.app_context():
+        applicant = User.query.filter_by(email="applicant@example.com").first()
+        vacancy = Vacancy.query.filter_by(title="Менеджер по подбору персонала").first()
+
+        resume = Resume(
+            user_id=applicant.id,
+            title="Junior HR QA Assistant",
+            about="Кандидат для проверки обновлённой карточки отклика работодателя.",
+            skills="Коммуникация, документация, аудит UX",
+            experience="Учебные и ручные проверки пользовательских сценариев.",
+            contacts="preview-check@example.com",
+        )
+        db.session.add(resume)
+        db.session.commit()
+
+        application = Application(
+            vacancy_id=vacancy.id,
+            applicant_id=applicant.id,
+            resume_id=resume.id,
+            cover_letter="Проверяем структуру обновлённой карточки отклика.",
+            status="new",
+        )
+        db.session.add(application)
+        db.session.commit()
+        vacancy_id = vacancy.id
+
+    login(client, "employer@example.com", "employer123")
+    response = client.get(f"/employer/vacancies/{vacancy_id}/applications", follow_redirects=True)
+    html = response.get_data(as_text=True)
+
+    assert response.status_code == 200
+    assert 'class="card-grid single-column dashboard-list vacancy-applications-list"' in html
+    assert 'class="application-preview-grid"' in html
+    assert "Всего:" in html
+    assert "О себе" in html
+    assert "Навыки" in html
+    assert "Опыт" in html
+    assert "Контакты" in html
+    assert "Сопроводительное письмо" in html
+
+
 def test_role_protection_blocks_wrong_sections(client):
     login(client, "employer@example.com", "employer123")
     employer_forbidden = client.get("/resume/my")
@@ -251,7 +329,7 @@ def test_admin_dashboard_requires_admin_role_and_renders_entry_page(client):
 
     assert admin_response.status_code == 200
     assert "Панель администратора" in admin_html
-    assert "Открыть Flask-Admin" in admin_html
+    assert "Открыть админ-раздел" in admin_html
     assert "Контроль доступа" in admin_html
 
 

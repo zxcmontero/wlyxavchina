@@ -10,6 +10,94 @@
 			],
 			"isBackground": true,
 			"group": "build"
+		},
+		{
+			"label": "run-flask-5002",
+			"type": "shell",
+			"command": ".\\.venv-1\\Scripts\\python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5002)"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "run-flask-5003",
+			"type": "shell",
+			"command": ".\\.venv-1\\Scripts\\python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5003)"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "run-flask-5004",
+			"type": "shell",
+			"command": "c:/Users/Nikita/Desktop/kadr agents/.venv-1/Scripts/python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5004)"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "run-flask-5005",
+			"type": "shell",
+			"command": "c:/Users/Nikita/Desktop/kadr agents/.venv-1/Scripts/python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5005)"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "run-flask-5006",
+			"type": "shell",
+			"command": "c:/Users/Nikita/Desktop/kadr agents/.venv-1/Scripts/python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5006)"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "run-flask-5007",
+			"type": "shell",
+			"command": "c:/Users/Nikita/Desktop/kadr agents/.venv-1/Scripts/python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5007)"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "run-flask-5008",
+			"type": "shell",
+			"command": "c:/Users/Nikita/Desktop/kadr agents/.venv-1/Scripts/python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5008)"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "run-flask-5009",
+			"type": "shell",
+			"command": "c:/Users/Nikita/Desktop/kadr agents/.venv-1/Scripts/python.exe",
+			"args": [
+				"-c",
+				"from app import app; app.run(port=5009)"
+			],
+			"isBackground": true,
+			"group": "build"
 		}
 	]
 }

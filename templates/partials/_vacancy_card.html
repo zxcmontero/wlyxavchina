@@ -4,22 +4,24 @@
         <span class="badge-chip badge-chip-muted">{{ vacancy.company_name }}</span>
     </div>
 
-    {% if vacancy_title_tag == 'h2' %}
-        <h2>{{ vacancy.title }}</h2>
-    {% else %}
-        <h3>{{ vacancy.title }}</h3>
-    {% endif %}
+    <div class="vacancy-card-body">
+        {% if vacancy_title_tag == 'h2' %}
+            <h2 class="vacancy-card-title">{{ vacancy.title }}</h2>
+        {% else %}
+            <h3 class="vacancy-card-title">{{ vacancy.title }}</h3>
+        {% endif %}
 
-    {% if show_salary_label %}
-        <p><strong>Зарплата:</strong> {{ vacancy.salary }}</p>
-    {% else %}
-        <p class="salary">{{ vacancy.salary }}</p>
-    {% endif %}
+        {% if show_salary_label %}
+            <p class="vacancy-card-salary"><span>Зарплата</span><strong>{{ vacancy.salary }}</strong></p>
+        {% else %}
+            <p class="salary">{{ vacancy.salary }}</p>
+        {% endif %}
 
-    <p class="vacancy-excerpt">{{ vacancy.description[:vacancy_excerpt_limit] }}{% if vacancy.description|length > vacancy_excerpt_limit %}...{% endif %}</p>
+        <p class="vacancy-excerpt">{{ vacancy.description[:vacancy_excerpt_limit] }}{% if vacancy.description|length > vacancy_excerpt_limit %}...{% endif %}</p>
+    </div>
 
     <div class="vacancy-card-footer">
         <a class="btn btn-light" href="{{ url_for('vacancy_detail', vacancy_id=vacancy.id) }}">Подробнее</a>
-        <span class="card-meta">{{ vacancy.created_at.strftime('%d.%m.%Y') }}</span>
+        <span class="card-meta vacancy-card-date">{{ vacancy.created_at.strftime('%d.%m.%Y') }}</span>
     </div>
 </article>

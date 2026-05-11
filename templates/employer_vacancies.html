@@ -9,17 +9,20 @@
             <h1>Мои вакансии</h1>
             <p class="section-text">Управляйте публикациями без табличной перегрузки: редактирование, отклики и удаление доступны прямо в карточке вакансии.</p>
         </div>
-        <span class="results-count">Всего: {{ vacancies|length }}</span>
-        <a class="btn btn-primary" href="{{ url_for('create_vacancy') }}">Добавить вакансию</a>
+        <div class="section-head-actions">
+            <span class="results-count">Всего: {{ vacancies|length }}</span>
+            <a class="btn btn-primary" href="{{ url_for('create_vacancy') }}">Добавить вакансию</a>
+        </div>
     </div>
 
     {% if vacancies %}
-        <div class="card-grid single-column dashboard-list">
+        <div class="card-grid single-column dashboard-list employer-vacancies-list">
             {% for vacancy in vacancies %}
                 <article class="card vacancy-card dashboard-card">
                     <div class="dashboard-card-top">
                         <div class="vacancy-card-top dashboard-card-chips">
                             <span class="badge-chip">{{ vacancy.location }}</span>
+                            <span class="badge-chip badge-chip-muted">{{ vacancy.company_name }}</span>
                         </div>
                         {% if vacancy.is_active %}
                             <span class="status-badge status-on">Активна</span>
@@ -29,6 +32,12 @@
                     </div>
 
                     <h2>{{ vacancy.title }}</h2>
+
+                    <div class="dashboard-card-meta-row">
+                        <p class="vacancy-card-salary dashboard-salary-chip"><span>Зарплата</span><strong>{{ vacancy.salary }}</strong></p>
+                        <p class="card-meta dashboard-card-meta">Создана {{ vacancy.created_at.strftime('%d.%m.%Y') }}</p>
+                    </div>
+                    <p class="dashboard-card-excerpt vacancy-excerpt">{{ vacancy.description[:190] }}{% if vacancy.description|length > 190 %}...{% endif %}</p>
 
                     <div class="dashboard-card-actions">
                         <a class="btn btn-light btn-small" href="{{ url_for('edit_vacancy', vacancy_id=vacancy.id) }}">Редактировать</a>

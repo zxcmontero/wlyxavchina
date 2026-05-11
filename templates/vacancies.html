@@ -3,7 +3,7 @@
 {% block title %}Вакансии | Кадровое агентство{% endblock %}
 
 {% block content %}
-<section class="section page-banner">
+<section class="section page-banner vacancies-page-banner">
     <div class="section-head section-head-stack">
         <div>
             <span class="section-kicker">Выбирайте спокойно</span>
@@ -28,7 +28,7 @@
     </div>
 </section>
 
-<section class="section">
+<section class="section vacancies-list-section">
     <div class="section-head section-head-stack">
         <div>
             <h2>Список вакансий</h2>
@@ -37,7 +37,7 @@
     </div>
 
     {% if vacancies %}
-        <div class="card-grid">
+        <div class="card-grid vacancies-grid">
             {% for vacancy in vacancies %}
                 {% set vacancy_title_tag = 'h2' %}
                 {% set vacancy_excerpt_limit = 180 %}

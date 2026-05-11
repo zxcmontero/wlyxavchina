@@ -14,8 +14,8 @@
 
     <div class="banner-stats">
         <div class="banner-stat">
-            <strong>Flask-Admin</strong>
-            <span>готовая административная оболочка без отдельного фронтенд-приложения</span>
+            <strong>Админ-раздел</strong>
+            <span>единое рабочее пространство для управления пользователями, резюме, вакансиями и откликами</span>
         </div>
         <div class="banner-stat">
             <strong>CRUD</strong>
@@ -29,7 +29,7 @@
 </section>
 
 <section class="section section-soft">
-    <div class="card-grid">
+    <div class="card-grid info-cards-grid">
         <article class="card info-card">
             <span class="badge-chip">Пользователи</span>
             <h2>Контроль доступа</h2>
@@ -56,11 +56,11 @@
             <span class="section-kicker">Переход в системную админку</span>
             <h2>Открыть рабочий интерфейс администратора</h2>
         </div>
-        <p class="section-text">Нажатие откроет интерфейс Flask-Admin, где доступны действия над сущностями проекта и вспомогательные административные сценарии.</p>
+        <p class="section-text">Нажатие откроет рабочий административный интерфейс, где доступны действия над сущностями проекта и вспомогательные сценарии управления.</p>
     </div>
 
     <div class="admin-actions">
-        <a class="btn btn-primary" href="{{ url_for('admin_panel.index') }}">Открыть Flask-Admin</a>
+        <a class="btn btn-primary" href="{{ url_for('admin_panel.index') }}">Открыть админ-раздел</a>
         <a class="btn btn-light" href="{{ url_for('index') }}">Вернуться на сайт</a>
     </div>
 </section>

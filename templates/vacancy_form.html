@@ -11,36 +11,28 @@
             <p class="form-intro-text">Соберите вакансию в двух понятных шагах: сначала основные параметры, затем описание и требования для кандидата.</p>
         </div>
 
-        <form method="post" class="form-shell">
+        <form method="post" class="form-shell editor-form-shell">
             {{ form.hidden_tag() }}
 
-            <section class="form-pane">
+            <section class="form-pane form-pane-balanced">
                 <div class="form-pane-head">
                     <h2 class="form-pane-title">Основные параметры</h2>
                     <p class="form-pane-text">Сформулируйте вакансию так, чтобы кандидат сразу понял позицию, компанию, локацию и статус публикации.</p>
                 </div>
 
-                <div class="form-group">
-                    {{ form.title.label(class_='form-label') }}
-                    {{ form.title(class_='form-control') }}
-                    {% for error in form.title.errors %}
-                        <div class="form-error">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                <div class="form-pane-grid">
+                    <div class="form-group form-group-span-2">
+                        {{ form.title.label(class_='form-label') }}
+                        {{ form.title(class_='form-control') }}
+                        {% for error in form.title.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
 
-                <div class="form-group">
-                    {{ form.company_name.label(class_='form-label') }}
-                    {{ form.company_name(class_='form-control') }}
-                    {% for error in form.company_name.errors %}
-                        <div class="form-error">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <div class="form-row two-columns">
                     <div class="form-group">
-                        {{ form.salary.label(class_='form-label') }}
-                        {{ form.salary(class_='form-control') }}
-                        {% for error in form.salary.errors %}
+                        {{ form.company_name.label(class_='form-label') }}
+                        {{ form.company_name(class_='form-control') }}
+                        {% for error in form.company_name.errors %}
                             <div class="form-error">{{ error }}</div>
                         {% endfor %}
                     </div>
@@ -52,33 +44,45 @@
                             <div class="form-error">{{ error }}</div>
                         {% endfor %}
                     </div>
-                </div>
 
-                <div class="checkbox-row">
-                    <label class="checkbox-item">{{ form.is_active() }} <span>{{ form.is_active.label.text }}</span></label>
+                    <div class="form-group">
+                        {{ form.salary.label(class_='form-label') }}
+                        {{ form.salary(class_='form-control') }}
+                        {% for error in form.salary.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-support-card">
+                        <span class="section-kicker">Публикация</span>
+                        <label class="checkbox-item">{{ form.is_active() }} <span>{{ form.is_active.label.text }}</span></label>
+                        <p class="form-inline-note">Неактивную вакансию можно сохранить как черновик и открыть позже, когда текст и условия уже готовы к публикации.</p>
+                    </div>
                 </div>
             </section>
 
-            <section class="form-pane">
+            <section class="form-pane form-pane-balanced">
                 <div class="form-pane-head">
                     <h2 class="form-pane-title">Описание для кандидата</h2>
                     <p class="form-pane-text">Расскажите о задачах и требованиях без перегруза, чтобы отклик приходил уже от подходящих соискателей.</p>
                 </div>
 
-                <div class="form-group">
-                    {{ form.description.label(class_='form-label') }}
-                    {{ form.description(class_='form-control', rows='6') }}
-                    {% for error in form.description.errors %}
-                        <div class="form-error">{{ error }}</div>
-                    {% endfor %}
-                </div>
+                <div class="form-pane-grid">
+                    <div class="form-group">
+                        {{ form.description.label(class_='form-label') }}
+                        {{ form.description(class_='form-control', rows='8') }}
+                        {% for error in form.description.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
 
-                <div class="form-group">
-                    {{ form.requirements.label(class_='form-label') }}
-                    {{ form.requirements(class_='form-control', rows='5') }}
-                    {% for error in form.requirements.errors %}
-                        <div class="form-error">{{ error }}</div>
-                    {% endfor %}
+                    <div class="form-group">
+                        {{ form.requirements.label(class_='form-label') }}
+                        {{ form.requirements(class_='form-control', rows='8') }}
+                        {% for error in form.requirements.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
             </section>
 
