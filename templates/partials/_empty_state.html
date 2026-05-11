@@ -1,0 +1,7 @@
+<div class="empty-state">
+    <p>{{ empty_message }}</p>
+
+    {% if empty_action_href and empty_action_text %}
+        <a class="btn btn-light" href="{{ empty_action_href }}">{{ empty_action_text }}</a>
+    {% endif %}
+</div>

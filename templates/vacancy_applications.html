@@ -21,7 +21,7 @@
                             <h2>{{ application.applicant.name }}</h2>
                             <p class="card-meta">Отклик от {{ application.created_at.strftime('%d.%m.%Y') }}</p>
                         </div>
-                        <span class="status-badge status-on">{{ application.status }}</span>
+                        <span class="status-badge status-on">{{ status_label(application.status) }}</span>
                     </div>
 
                     <div class="detail-block">

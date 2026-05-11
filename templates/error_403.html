@@ -3,9 +3,33 @@
 {% block title %}Ошибка 403{% endblock %}
 
 {% block content %}
-<section class="section page-card error-card">
-    <h1>Ошибка 403</h1>
-    <p>У вас нет доступа к этой странице.</p>
-    <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+<section class="section page-banner error-card service-hero">
+    <div class="service-code">403</div>
+    <div class="section-head section-head-stack">
+        <div>
+            <span class="section-kicker">Доступ ограничен</span>
+            <h1>У вас нет доступа к этой странице</h1>
+        </div>
+        <p class="section-text">Страница существует, но для неё нужен другой уровень доступа или аккаунт с подходящей ролью.</p>
+    </div>
+
+    <div class="action-row service-actions">
+        <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+        <a class="btn btn-light" href="{{ url_for('login') }}">Войти под другим аккаунтом</a>
+    </div>
+</section>
+
+<section class="section section-soft">
+    <div class="card-grid">
+        <article class="card info-card">
+            <h2>Проверьте роль</h2>
+            <p>Некоторые разделы доступны только соискателю, работодателю или администратору. Возможно, вы вошли не под той ролью.</p>
+        </article>
+
+        <article class="card info-card">
+            <h2>Вернитесь к рабочему сценарию</h2>
+            <p>Если вы не уверены, что делать дальше, лучше вернуться на главную или открыть список вакансий и продолжить с доступной страницы.</p>
+        </article>
+    </div>
 </section>
 {% endblock %}

@@ -29,33 +29,27 @@
 </section>
 
 <section class="section">
-    <div class="section-head">
-        <h2>Список вакансий</h2>
+    <div class="section-head section-head-stack">
+        <div>
+            <h2>Список вакансий</h2>
+        </div>
         <span class="results-count">Найдено: {{ vacancies|length }}</span>
     </div>
 
     {% if vacancies %}
         <div class="card-grid">
             {% for vacancy in vacancies %}
-                <article class="card vacancy-card">
-                    <div class="vacancy-card-top">
-                        <span class="badge-chip">{{ vacancy.location }}</span>
-                        <span class="badge-chip badge-chip-muted">{{ vacancy.company_name }}</span>
-                    </div>
-                    <h2>{{ vacancy.title }}</h2>
-                    <p><strong>Зарплата:</strong> {{ vacancy.salary }}</p>
-                    <p class="vacancy-excerpt">{{ vacancy.description[:180] }}{% if vacancy.description|length > 180 %}...{% endif %}</p>
-                    <div class="vacancy-card-footer">
-                        <a class="btn btn-light" href="{{ url_for('vacancy_detail', vacancy_id=vacancy.id) }}">Подробнее</a>
-                        <span class="card-meta">{{ vacancy.created_at.strftime('%d.%m.%Y') }}</span>
-                    </div>
-                </article>
+                {% set vacancy_title_tag = 'h2' %}
+                {% set vacancy_excerpt_limit = 180 %}
+                {% set show_salary_label = true %}
+                {% include 'partials/_vacancy_card.html' %}
             {% endfor %}
         </div>
     {% else %}
-        <div class="empty-state">
-            <p>Сейчас нет активных вакансий.</p>
-        </div>
+        {% set empty_message = 'Сейчас нет активных вакансий.' %}
+        {% set empty_action_href = none %}
+        {% set empty_action_text = none %}
+        {% include 'partials/_empty_state.html' %}
     {% endif %}
 </section>
 {% endblock %}

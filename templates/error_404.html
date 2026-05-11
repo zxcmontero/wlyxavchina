@@ -3,9 +3,33 @@
 {% block title %}Ошибка 404{% endblock %}
 
 {% block content %}
-<section class="section page-card error-card">
-    <h1>Ошибка 404</h1>
-    <p>Страница не найдена.</p>
-    <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+<section class="section page-banner error-card service-hero">
+    <div class="service-code">404</div>
+    <div class="section-head section-head-stack">
+        <div>
+            <span class="section-kicker">Страница потерялась</span>
+            <h1>Страница не найдена</h1>
+        </div>
+        <p class="section-text">Возможно, адрес страницы изменился, ссылка устарела или нужный маршрут больше не существует в текущем сценарии.</p>
+    </div>
+
+    <div class="action-row service-actions">
+        <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+        <a class="btn btn-light" href="{{ url_for('vacancies') }}">Открыть вакансии</a>
+    </div>
+</section>
+
+<section class="section section-soft">
+    <div class="card-grid">
+        <article class="card info-card">
+            <h2>Проверьте адрес</h2>
+            <p>Если вы вводили URL вручную, убедитесь, что в нём нет опечаток и лишних символов.</p>
+        </article>
+
+        <article class="card info-card">
+            <h2>Продолжите с доступной страницы</h2>
+            <p>Удобнее всего вернуться на главную или открыть список вакансий и продолжить навигацию уже оттуда.</p>
+        </article>
+    </div>
 </section>
 {% endblock %}

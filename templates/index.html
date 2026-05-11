@@ -107,25 +107,17 @@
     {% if vacancies %}
         <div class="card-grid">
             {% for vacancy in vacancies %}
-                <article class="card vacancy-card">
-                    <div class="vacancy-card-top">
-                        <span class="badge-chip">{{ vacancy.location }}</span>
-                        <span class="badge-chip badge-chip-muted">{{ vacancy.company_name }}</span>
-                    </div>
-                    <h3>{{ vacancy.title }}</h3>
-                    <p class="salary">{{ vacancy.salary }}</p>
-                    <p class="vacancy-excerpt">{{ vacancy.description[:160] }}{% if vacancy.description|length > 160 %}...{% endif %}</p>
-                    <div class="vacancy-card-footer">
-                        <a class="btn btn-light" href="{{ url_for('vacancy_detail', vacancy_id=vacancy.id) }}">Подробнее</a>
-                        <span class="card-meta">{{ vacancy.created_at.strftime('%d.%m.%Y') }}</span>
-                    </div>
-                </article>
+                {% set vacancy_title_tag = 'h3' %}
+                {% set vacancy_excerpt_limit = 160 %}
+                {% set show_salary_label = false %}
+                {% include 'partials/_vacancy_card.html' %}
             {% endfor %}
         </div>
     {% else %}
-        <div class="empty-state">
-            <p>Пока вакансий нет.</p>
-        </div>
+        {% set empty_message = 'Пока вакансий нет.' %}
+        {% set empty_action_href = none %}
+        {% set empty_action_text = none %}
+        {% include 'partials/_empty_state.html' %}
     {% endif %}
 </section>
 {% endblock %}

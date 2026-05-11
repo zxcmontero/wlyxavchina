@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "run-current-flask",
+			"type": "shell",
+			"command": ".\\.venv-1\\Scripts\\python.exe",
+			"args": [
+				"app.py"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}

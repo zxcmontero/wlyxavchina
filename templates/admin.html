@@ -3,11 +3,65 @@
 {% block title %}Администрирование | Кадровое агентство{% endblock %}
 
 {% block content %}
+<section class="section page-banner">
+    <div class="section-head section-head-stack">
+        <div>
+            <span class="section-kicker">Точка входа администратора</span>
+            <h1>Панель администратора</h1>
+        </div>
+        <p class="section-text">Отсюда администратор переходит в системную админку и получает прямой доступ к управлению пользователями, резюме, вакансиями и откликами.</p>
+    </div>
+
+    <div class="banner-stats">
+        <div class="banner-stat">
+            <strong>Flask-Admin</strong>
+            <span>готовая административная оболочка без отдельного фронтенд-приложения</span>
+        </div>
+        <div class="banner-stat">
+            <strong>CRUD</strong>
+            <span>создание, редактирование и контроль основных сущностей проекта</span>
+        </div>
+        <div class="banner-stat">
+            <strong>Роли</strong>
+            <span>доступ ограничен только администраторами и не виден обычным пользователям</span>
+        </div>
+    </div>
+</section>
+
+<section class="section section-soft">
+    <div class="card-grid">
+        <article class="card info-card">
+            <span class="badge-chip">Пользователи</span>
+            <h2>Контроль доступа</h2>
+            <p>Администратор управляет ролями, данными пользователей и может быстро проверить, как устроена модель доступа внутри проекта.</p>
+        </article>
+
+        <article class="card info-card">
+            <span class="badge-chip badge-chip-muted">Контент</span>
+            <h2>Резюме и вакансии</h2>
+            <p>Через административный интерфейс можно редактировать карточки резюме и вакансий, если нужно оперативно проверить или скорректировать данные.</p>
+        </article>
+
+        <article class="card info-card">
+            <span class="badge-chip">Связи</span>
+            <h2>Отклики и соответствия</h2>
+            <p>Отклики остаются привязанными к кандидату, вакансии и резюме, поэтому админка подходит не только для просмотра, но и для ручной проверки сценариев.</p>
+        </article>
+    </div>
+</section>
+
 <section class="section page-card">
-    <h1>Панель администратора</h1>
-    <p>Здесь администратор может перейти в системную админку и управлять данными проекта.</p>
+    <div class="section-head section-head-stack">
+        <div>
+            <span class="section-kicker">Переход в системную админку</span>
+            <h2>Открыть рабочий интерфейс администратора</h2>
+        </div>
+        <p class="section-text">Нажатие откроет интерфейс Flask-Admin, где доступны действия над сущностями проекта и вспомогательные административные сценарии.</p>
+    </div>
+
     <div class="admin-actions">
         <a class="btn btn-primary" href="{{ url_for('admin_panel.index') }}">Открыть Flask-Admin</a>
+        <a class="btn btn-light" href="{{ url_for('index') }}">Вернуться на сайт</a>
     </div>
 </section>
 {% endblock %}

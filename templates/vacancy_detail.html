@@ -57,15 +57,21 @@
 
         {% if current_user.is_authenticated and current_user.role == 'applicant' %}
             <div class="form-card compact-card application-panel">
-                <h2>Отклик на вакансию</h2>
+                <div class="form-intro form-intro-compact">
+                    <span class="section-kicker">Отклик без лишнего шума</span>
+                    <h2>Отклик на вакансию</h2>
+                </div>
 
                 {% if already_applied %}
-                    <p>Вы уже откликались на эту вакансию.</p>
+                    <p class="form-intro-text">Вы уже откликались на эту вакансию. Остаётся дождаться ответа работодателя.</p>
                 {% elif not current_user.resume %}
-                    <p>Сначала создайте резюме, чтобы отправить отклик.</p>
-                    <a class="btn btn-primary" href="{{ url_for('create_resume') }}">Создать резюме</a>
+                    <p class="form-intro-text">Сначала создайте резюме, чтобы отправить отклик и показать работодателю свой опыт.</p>
+                    <div class="form-actions">
+                        <a class="btn btn-primary" href="{{ url_for('create_resume') }}">Создать резюме</a>
+                    </div>
                 {% elif application_form %}
-                    <form method="post" action="{{ url_for('apply_to_vacancy', vacancy_id=vacancy.id) }}">
+                    <p class="form-intro-text">Короткое сопроводительное письмо поможет быстрее объяснить, почему вы подходите на эту роль.</p>
+                    <form method="post" action="{{ url_for('apply_to_vacancy', vacancy_id=vacancy.id) }}" class="form-shell form-shell-tight">
                         {{ application_form.hidden_tag() }}
                         <div class="form-group">
                             {{ application_form.cover_letter.label(class_='form-label') }}
@@ -74,15 +80,22 @@
                                 <div class="form-error">{{ error }}</div>
                             {% endfor %}
                         </div>
-                        {{ application_form.submit(class_='btn btn-primary btn-wide') }}
+                        <div class="form-actions">
+                            {{ application_form.submit(class_='btn btn-primary btn-wide') }}
+                        </div>
                     </form>
                 {% endif %}
             </div>
         {% elif not current_user.is_authenticated %}
             <div class="form-card compact-card application-panel">
-                <h2>Отклик на вакансию</h2>
-                <p>Чтобы откликнуться, войдите в систему под аккаунтом соискателя.</p>
-                <a class="btn btn-primary btn-wide" href="{{ url_for('login') }}">Войти</a>
+                <div class="form-intro form-intro-compact">
+                    <span class="section-kicker">Отклик без лишнего шума</span>
+                    <h2>Отклик на вакансию</h2>
+                </div>
+                <p class="form-intro-text">Чтобы откликнуться, войдите в систему под аккаунтом соискателя.</p>
+                <div class="form-actions">
+                    <a class="btn btn-primary btn-wide" href="{{ url_for('login') }}">Войти</a>
+                </div>
             </div>
         {% endif %}
     </aside>

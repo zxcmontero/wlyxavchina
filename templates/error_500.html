@@ -3,9 +3,33 @@
 {% block title %}Ошибка 500{% endblock %}
 
 {% block content %}
-<section class="section page-card error-card">
-    <h1>Ошибка 500</h1>
-    <p>Произошла внутренняя ошибка сервера.</p>
-    <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+<section class="section page-banner error-card service-hero">
+    <div class="service-code">500</div>
+    <div class="section-head section-head-stack">
+        <div>
+            <span class="section-kicker">Внутренняя ошибка</span>
+            <h1>Что-то пошло не так на стороне сервера</h1>
+        </div>
+        <p class="section-text">Проблема возникла внутри приложения. Обычно помогает повторить действие позже или вернуться к стабильному разделу сайта.</p>
+    </div>
+
+    <div class="action-row service-actions">
+        <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+        <a class="btn btn-light" href="{{ url_for('contacts') }}">Открыть контакты</a>
+    </div>
+</section>
+
+<section class="section section-soft">
+    <div class="card-grid">
+        <article class="card info-card">
+            <h2>Попробуйте позже</h2>
+            <p>Если ошибка была случайной, повторная попытка через короткое время часто решает проблему без дополнительных действий.</p>
+        </article>
+
+        <article class="card info-card">
+            <h2>Вернитесь к безопасной точке</h2>
+            <p>Лучше всего вернуться на главную страницу или в список вакансий, а затем повторить сценарий заново.</p>
+        </article>
+    </div>
 </section>
 {% endblock %}

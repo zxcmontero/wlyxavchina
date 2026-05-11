@@ -5,40 +5,42 @@
 {% block content %}
 <section class="section">
     <div class="section-head">
-        <h1>Мои отклики</h1>
+        <div>
+            <h1>Мои отклики</h1>
+            <p class="section-text">Все отправленные отклики собраны в одном месте: можно быстро перейти обратно к вакансии и проверить текущий статус.</p>
+        </div>
+        <span class="results-count">Всего: {{ applications|length }}</span>
     </div>
 
     {% if applications %}
-        <div class="table-wrapper">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Вакансия</th>
-                        <th>Компания</th>
-                        <th>Статус</th>
-                        <th>Дата</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for application in applications %}
-                        <tr>
-                            <td>
-                                <a href="{{ url_for('vacancy_detail', vacancy_id=application.vacancy.id) }}">
-                                    {{ application.vacancy.title }}
-                                </a>
-                            </td>
-                            <td>{{ application.vacancy.company_name }}</td>
-                            <td>{{ application.status }}</td>
-                            <td>{{ application.created_at.strftime('%d.%m.%Y') }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="card-grid single-column dashboard-list">
+            {% for application in applications %}
+                <article class="card application-card dashboard-card">
+                    <div class="dashboard-card-top">
+                        <div class="vacancy-card-top dashboard-card-chips">
+                            <span class="badge-chip badge-chip-muted">{{ application.vacancy.company_name }}</span>
+                            <span class="badge-chip">{{ application.created_at.strftime('%d.%m.%Y') }}</span>
+                        </div>
+                        <span class="status-badge dashboard-status">{{ status_label(application.status) }}</span>
+                    </div>
+
+                    <h2>
+                        <a class="dashboard-card-link" href="{{ url_for('vacancy_detail', vacancy_id=application.vacancy.id) }}">
+                            {{ application.vacancy.title }}
+                        </a>
+                    </h2>
+
+                    <div class="dashboard-card-actions">
+                        <a class="btn btn-light" href="{{ url_for('vacancy_detail', vacancy_id=application.vacancy.id) }}">Открыть вакансию</a>
+                    </div>
+                </article>
+            {% endfor %}
         </div>
     {% else %}
-        <div class="empty-state">
-            <p>Вы пока не откликались на вакансии.</p>
-        </div>
+        {% set empty_message = 'Вы пока не откликались на вакансии.' %}
+        {% set empty_action_href = url_for('vacancies') %}
+        {% set empty_action_text = 'Перейти к вакансиям' %}
+        {% include 'partials/_empty_state.html' %}
     {% endif %}
 </section>
 {% endblock %}

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Перейти к содержимому</a>
+
     <div class="page-decor page-decor-left"></div>
     <div class="page-decor page-decor-right"></div>
 
@@ -19,38 +21,51 @@
             </div>
 
             <div class="header-panel">
-                <nav class="site-nav">
-                    <a class="nav-link {% if request.endpoint == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">Главная</a>
-                    <a class="nav-link {% if request.endpoint == 'about' %}is-active{% endif %}" href="{{ url_for('about') }}">О компании</a>
-                    <a class="nav-link {% if request.endpoint == 'contacts' %}is-active{% endif %}" href="{{ url_for('contacts') }}">Контакты</a>
-                    <a class="nav-link {% if request.endpoint in ['vacancies', 'vacancy_detail'] %}is-active{% endif %}" href="{{ url_for('vacancies') }}">Вакансии</a>
+                <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Открыть меню" data-nav-toggle>
+                    <span class="nav-toggle-box" aria-hidden="true">
+                        <span class="nav-toggle-line"></span>
+                        <span class="nav-toggle-line"></span>
+                        <span class="nav-toggle-line"></span>
+                    </span>
+                    <span class="nav-toggle-text">Меню</span>
+                </button>
 
-                    {% if current_user.is_authenticated %}
-                        {% if current_user.role == 'applicant' %}
-                            <a class="nav-link {% if request.endpoint in ['my_resume', 'create_resume', 'edit_resume'] %}is-active{% endif %}" href="{{ url_for('my_resume') }}">Мое резюме</a>
-                            <a class="nav-link {% if request.endpoint == 'my_applications' %}is-active{% endif %}" href="{{ url_for('my_applications') }}">Мои отклики</a>
-                        {% elif current_user.role == 'employer' %}
-                            <a class="nav-link {% if request.endpoint in ['employer_vacancies', 'create_vacancy', 'edit_vacancy', 'vacancy_applications'] %}is-active{% endif %}" href="{{ url_for('employer_vacancies') }}">Мои вакансии</a>
-                        {% elif current_user.role == 'admin' %}
-                            <a class="nav-link {% if request.endpoint == 'admin_dashboard' %}is-active{% endif %}" href="{{ url_for('admin_dashboard') }}">Админ</a>
+                <div class="header-menu" id="site-menu" aria-hidden="false" data-nav-menu>
+                    <nav class="site-nav" aria-label="Основная навигация">
+                        <a class="nav-link {% if request.endpoint == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">Главная</a>
+                        <a class="nav-link {% if request.endpoint == 'about' %}is-active{% endif %}" href="{{ url_for('about') }}">О компании</a>
+                        <a class="nav-link {% if request.endpoint == 'contacts' %}is-active{% endif %}" href="{{ url_for('contacts') }}">Контакты</a>
+                        <a class="nav-link {% if request.endpoint in ['vacancies', 'vacancy_detail'] %}is-active{% endif %}" href="{{ url_for('vacancies') }}">Вакансии</a>
+
+                        {% if current_user.is_authenticated %}
+                            {% if current_user.role == 'applicant' %}
+                                <a class="nav-link {% if request.endpoint in ['my_resume', 'create_resume', 'edit_resume'] %}is-active{% endif %}" href="{{ url_for('my_resume') }}">Мое резюме</a>
+                                <a class="nav-link {% if request.endpoint == 'my_applications' %}is-active{% endif %}" href="{{ url_for('my_applications') }}">Мои отклики</a>
+                            {% elif current_user.role == 'employer' %}
+                                <a class="nav-link {% if request.endpoint in ['employer_vacancies', 'create_vacancy', 'edit_vacancy', 'vacancy_applications'] %}is-active{% endif %}" href="{{ url_for('employer_vacancies') }}">Мои вакансии</a>
+                            {% elif current_user.role == 'admin' %}
+                                <a class="nav-link {% if request.endpoint == 'admin_dashboard' %}is-active{% endif %}" href="{{ url_for('admin_dashboard') }}">Админ</a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </nav>
+                    </nav>
 
-                <div class="header-actions">
-                    {% if current_user.is_authenticated %}
-                        <span class="nav-user">{{ current_user.name }}</span>
-                        <a class="btn btn-ghost" href="{{ url_for('logout') }}">Выход</a>
-                    {% else %}
-                        <a class="btn btn-ghost" href="{{ url_for('login') }}">Вход</a>
-                        <a class="btn btn-primary" href="{{ url_for('register') }}">Регистрация</a>
-                    {% endif %}
+                    <div class="header-actions">
+                        {% if current_user.is_authenticated %}
+                            <span class="nav-user">{{ current_user.name }}</span>
+                            <a class="btn btn-ghost" href="{{ url_for('logout') }}">Выход</a>
+                        {% else %}
+                            <a class="btn btn-ghost" href="{{ url_for('login') }}">Вход</a>
+                            <a class="btn btn-primary" href="{{ url_for('register') }}">Регистрация</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="page-content">
+    <div class="nav-overlay" aria-hidden="true" data-nav-overlay></div>
+
+    <main class="page-content" id="main-content" tabindex="-1">
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
@@ -70,7 +85,39 @@
         <div class="container footer-inner">
             <div>
                 <p class="footer-title">Кадровое агентство</p>
-                <p>Живой и понятный сервис для поиска работы и сотрудников без лишней путаницы.</p>
+ 
+                <noscript>
+                    <details class="nav-fallback" role="navigation" aria-label="Навигация без JS">
+                        <summary class="nav-fallback-summary">Меню</summary>
+                        <nav class="site-nav nav-fallback-nav" aria-label="Навигация без JS">
+                            <a class="nav-link {% if request.endpoint == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">Главная</a>
+                            <a class="nav-link {% if request.endpoint == 'about' %}is-active{% endif %}" href="{{ url_for('about') }}">О компании</a>
+                            <a class="nav-link {% if request.endpoint == 'contacts' %}is-active{% endif %}" href="{{ url_for('contacts') }}">Контакты</a>
+                            <a class="nav-link {% if request.endpoint in ['vacancies', 'vacancy_detail'] %}is-active{% endif %}" href="{{ url_for('vacancies') }}">Вакансии</a>
+
+                            {% if current_user.is_authenticated %}
+                                {% if current_user.role == 'applicant' %}
+                                    <a class="nav-link {% if request.endpoint in ['my_resume', 'create_resume', 'edit_resume'] %}is-active{% endif %}" href="{{ url_for('my_resume') }}">Мое резюме</a>
+                                    <a class="nav-link {% if request.endpoint == 'my_applications' %}is-active{% endif %}" href="{{ url_for('my_applications') }}">Мои отклики</a>
+                                {% elif current_user.role == 'employer' %}
+                                    <a class="nav-link {% if request.endpoint in ['employer_vacancies', 'create_vacancy', 'edit_vacancy', 'vacancy_applications'] %}is-active{% endif %}" href="{{ url_for('employer_vacancies') }}">Мои вакансии</a>
+                                {% elif current_user.role == 'admin' %}
+                                    <a class="nav-link {% if request.endpoint == 'admin_dashboard' %}is-active{% endif %}" href="{{ url_for('admin_dashboard') }}">Админ</a>
+                                {% endif %}
+                            {% endif %}
+                        </nav>
+
+                        <div class="header-actions nav-fallback-actions">
+                            {% if current_user.is_authenticated %}
+                                <span class="nav-user">{{ current_user.name }}</span>
+                                <a class="btn btn-ghost" href="{{ url_for('logout') }}">Выход</a>
+                            {% else %}
+                                <a class="btn btn-ghost" href="{{ url_for('login') }}">Вход</a>
+                                <a class="btn btn-primary" href="{{ url_for('register') }}">Регистрация</a>
+                            {% endif %}
+                        </div>
+                    </details>
+                </noscript>
             </div>
             <div class="footer-links">
                 <a href="{{ url_for('vacancies') }}">Смотреть вакансии</a>

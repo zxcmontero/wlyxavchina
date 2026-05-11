@@ -21,6 +21,33 @@ def test_public_pages_are_available(client):
         assert response.status_code == 200
 
 
+def test_public_pages_render_updated_key_content(client):
+    expectations = {
+        "/": ["Работа и подбор персонала без скучной бюрократии", "Свежие вакансии"],
+        "/about": ["Кадровое агентство без лишней сложности", "Основные сценарии покрыты от входа до отклика"],
+        "/contacts": ["Связаться без лишних кругов", "Подготовьте вопрос в одном сообщении"],
+        "/vacancies": ["Вакансии, на которые можно откликнуться уже сейчас", "Найдено:"],
+    }
+
+    for route, snippets in expectations.items():
+        response = client.get(route)
+        html = response.get_data(as_text=True)
+
+        assert response.status_code == 200
+        for snippet in snippets:
+            assert snippet in html
+
+
+def test_base_layout_renders_accessible_navigation_fallback(client):
+    response = client.get("/")
+    html = response.get_data(as_text=True)
+
+    assert response.status_code == 200
+    assert "Перейти к содержимому" in html
+    assert "data-nav-toggle" in html
+    assert "Навигация без JS" in html
+
+
 def test_register_creates_user_with_selected_role(client, app_instance):
     response = client.post(
         "/register",
@@ -84,6 +111,51 @@ def test_applicant_can_create_resume_and_apply_only_once(client, app_instance):
         assert applicant.resume is not None
         assert Resume.query.count() == 1
         assert Application.query.filter_by(applicant_id=applicant.id).count() == 1
+
+
+def test_application_pages_render_friendly_status_labels(client, app_instance):
+    with app_instance.app_context():
+        applicant = User.query.filter_by(email="applicant@example.com").first()
+        vacancy = Vacancy.query.filter_by(title="Менеджер по подбору персонала").first()
+
+        resume = Resume(
+            user_id=applicant.id,
+            title="Тестовое резюме",
+            about="Проверка отображения статусов в интерфейсе.",
+            skills="Коммуникация, подбор, документооборот",
+            experience="Учебный и стажёрский опыт в HR.",
+            contacts="status-check@example.com",
+        )
+        db.session.add(resume)
+        db.session.commit()
+
+        application = Application(
+            vacancy_id=vacancy.id,
+            applicant_id=applicant.id,
+            resume_id=resume.id,
+            cover_letter="Проверяем дружественное отображение статуса.",
+            status="review",
+        )
+        db.session.add(application)
+        db.session.commit()
+        vacancy_id = vacancy.id
+
+    login(client, "applicant@example.com", "applicant123")
+    applicant_response = client.get("/applications/my", follow_redirects=True)
+    applicant_html = applicant_response.get_data(as_text=True)
+
+    assert applicant_response.status_code == 200
+    assert "На рассмотрении" in applicant_html
+    assert re.search(r">\s*review\s*<", applicant_html) is None
+
+    logout(client)
+    login(client, "employer@example.com", "employer123")
+    employer_response = client.get(f"/employer/vacancies/{vacancy_id}/applications", follow_redirects=True)
+    employer_html = employer_response.get_data(as_text=True)
+
+    assert employer_response.status_code == 200
+    assert "На рассмотрении" in employer_html
+    assert re.search(r">\s*review\s*<", employer_html) is None
 
 
 def test_role_protection_blocks_wrong_sections(client):
@@ -161,6 +233,26 @@ def test_admin_panel_requires_admin_role(client):
     admin_response = client.get("/admin/panel/", follow_redirects=True)
     assert admin_response.status_code == 200
     assert "Пользователи" in admin_response.get_data(as_text=True)
+
+
+def test_admin_dashboard_requires_admin_role_and_renders_entry_page(client):
+    anonymous_response = client.get("/admin", follow_redirects=False)
+    assert anonymous_response.status_code == 302
+    assert "/login" in anonymous_response.headers["Location"]
+
+    login(client, "applicant@example.com", "applicant123")
+    applicant_response = client.get("/admin", follow_redirects=False)
+    assert applicant_response.status_code == 403
+
+    logout(client)
+    login(client, "admin@example.com", "admin123")
+    admin_response = client.get("/admin", follow_redirects=True)
+    admin_html = admin_response.get_data(as_text=True)
+
+    assert admin_response.status_code == 200
+    assert "Панель администратора" in admin_html
+    assert "Открыть Flask-Admin" in admin_html
+    assert "Контроль доступа" in admin_html
 
 
 def test_admin_can_create_user_without_exposing_password_hash(client, app_instance):

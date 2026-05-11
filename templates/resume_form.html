@@ -4,52 +4,71 @@
 
 {% block content %}
 <section class="form-section">
-    <div class="form-card form-card-wide">
-        <h1>{{ form_title }}</h1>
-        <form method="post">
+    <div class="form-card form-card-wide form-card-editor">
+        <div class="form-intro">
+            <span class="section-kicker">Профиль соискателя</span>
+            <h1>{{ form_title }}</h1>
+            <p class="form-intro-text">Соберите резюме в понятной структуре: сначала суть, затем опыт и контакты. Так работодателю проще быстро считать сильные стороны.</p>
+        </div>
+
+        <form method="post" class="form-shell">
             {{ form.hidden_tag() }}
 
-            <div class="form-group">
-                {{ form.title.label(class_='form-label') }}
-                {{ form.title(class_='form-control') }}
-                {% for error in form.title.errors %}
-                    <div class="form-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+            <section class="form-pane">
+                <div class="form-pane-head">
+                    <h2 class="form-pane-title">Основная информация</h2>
+                    <p class="form-pane-text">Опишите позицию, ключевые навыки и опыт так, чтобы сильные стороны были видны сразу.</p>
+                </div>
 
-            <div class="form-group">
-                {{ form.about.label(class_='form-label') }}
-                {{ form.about(class_='form-control', rows='5') }}
-                {% for error in form.about.errors %}
-                    <div class="form-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+                <div class="form-group">
+                    {{ form.title.label(class_='form-label') }}
+                    {{ form.title(class_='form-control') }}
+                    {% for error in form.title.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
 
-            <div class="form-group">
-                {{ form.skills.label(class_='form-label') }}
-                {{ form.skills(class_='form-control', rows='4') }}
-                {% for error in form.skills.errors %}
-                    <div class="form-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+                <div class="form-group">
+                    {{ form.about.label(class_='form-label') }}
+                    {{ form.about(class_='form-control', rows='5') }}
+                    {% for error in form.about.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
 
-            <div class="form-group">
-                {{ form.experience.label(class_='form-label') }}
-                {{ form.experience(class_='form-control', rows='5') }}
-                {% for error in form.experience.errors %}
-                    <div class="form-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+                <div class="form-group">
+                    {{ form.skills.label(class_='form-label') }}
+                    {{ form.skills(class_='form-control', rows='4') }}
+                    {% for error in form.skills.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
 
-            <div class="form-group">
-                {{ form.contacts.label(class_='form-label') }}
-                {{ form.contacts(class_='form-control', rows='4') }}
-                {% for error in form.contacts.errors %}
-                    <div class="form-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+                <div class="form-group">
+                    {{ form.experience.label(class_='form-label') }}
+                    {{ form.experience(class_='form-control', rows='5') }}
+                    {% for error in form.experience.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </section>
 
-            <div class="form-actions">
+            <section class="form-pane">
+                <div class="form-pane-head">
+                    <h2 class="form-pane-title">Контакты</h2>
+                    <p class="form-pane-text">Оставьте удобный способ связи, чтобы работодатель мог быстро вернуться к вам после просмотра резюме.</p>
+                </div>
+
+                <div class="form-group">
+                    {{ form.contacts.label(class_='form-label') }}
+                    {{ form.contacts(class_='form-control', rows='4') }}
+                    {% for error in form.contacts.errors %}
+                        <div class="form-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <div class="form-actions form-actions-end">
                 {{ form.submit(class_='btn btn-primary') }}
             </div>
         </form>

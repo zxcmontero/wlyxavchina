@@ -390,7 +390,10 @@ def add_admin_panel(app):
 def register_routes(app):
     @app.context_processor
     def inject_now():
-        return {"current_year": datetime.now().year}
+        def status_label(code):
+            return APPLICATION_STATUS_LABELS.get(code, code)
+
+        return {"current_year": datetime.now().year, "status_label": status_label}
 
     @app.route("/")
     def index():
