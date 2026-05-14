@@ -377,6 +377,7 @@ def add_admin_panel(app):
     admin = Admin(
         app,
         name="Кадровое агентство",
+        base_template="admin/custom_base.html",
         template_mode="bootstrap4",
         index_view=SecureAdminIndexView(name="Админка", endpoint="admin_panel", url="/admin/panel"),
     )
