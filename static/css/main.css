@@ -251,8 +251,16 @@ ul {
 }
 
 .logo {
+    display: inline-flex;
+    width: fit-content;
     font-size: 32px;
     font-weight: 800;
+    transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+.logo:hover {
+    transform: translateY(-1px);
+    text-shadow: 0 10px 20px rgba(255, 107, 74, 0.16);
 }
 
 .header-panel {
@@ -456,16 +464,19 @@ body.has-open-menu .nav-overlay {
 .page-content {
     flex: 1 0 auto;
     width: 100%;
-    padding: 26px 0 40px;
+    padding: var(--section-gap) 0 40px;
 }
 
 /* Uniform spacing between top-level sections inside main content */
 /* Apply to direct children of the inner `.container` so sections get spaced
    correctly (base.html uses `.page-content > .container > section`). */
-.page-content .container > * {
-    margin-bottom: var(--section-gap);
+.page-content .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-gap);
 }
-.page-content .container > *:last-child {
+
+.page-content .container > * {
     margin-bottom: 0;
 }
 
@@ -480,9 +491,9 @@ body.has-open-menu .nav-overlay {
 }
 
 .footer-inner {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 22px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 22px 28px;
     padding: 12px 0 28px;
     color: var(--text-soft);
     align-items: start;
@@ -494,16 +505,7 @@ body.has-open-menu .nav-overlay {
 }
 
 .footer-inner > * {
-    flex: 1 1 220px;
     min-width: 0;
-}
-
-.footer-inner > :first-child {
-    flex: 1.5 1 360px;
-}
-
-.footer-inner > :last-child {
-    flex: 0.8 1 180px;
 }
 
 .footer-title {
@@ -744,7 +746,6 @@ body.has-open-menu .nav-overlay {
     opacity: 0.92;
     background: linear-gradient(90deg, rgba(255, 107, 74, 0.72), rgba(255, 211, 106, 0.78), rgba(29, 183, 166, 0.64));
     transition: transform var(--soft-hover-transition), opacity var(--soft-hover-transition);
-    transform: scaleX(0.92);
     transform-origin: left center;
 }
 
@@ -1163,13 +1164,11 @@ body.has-open-menu .nav-overlay {
 .feature-card:hover::before,
 .feature-card:focus-within::before {
     opacity: 0.95;
-    transform: scaleX(0.955);
 }
 
 .banner-stat:hover::before,
 .banner-stat:focus-within::before {
     opacity: 0.94;
-    transform: scaleX(0.95);
 }
 
 .feature-card:hover::after,
@@ -1183,7 +1182,6 @@ body.has-open-menu .nav-overlay {
 .step-card:hover::before,
 .step-card:focus-within::before {
     opacity: 0.95;
-    transform: scaleX(0.955);
 }
 
 /* Respect reduced-motion preference */
@@ -1441,14 +1439,17 @@ body.has-open-menu .nav-overlay {
     height: 100%;
 }
 
+.banner-stat:nth-child(1),
 .summary-item:nth-child(1) {
     background: linear-gradient(135deg, rgba(255, 240, 227, 0.98), rgba(255, 255, 255, 0.98));
 }
 
+.banner-stat:nth-child(2),
 .summary-item:nth-child(2) {
     background: linear-gradient(135deg, rgba(234, 251, 247, 0.98), rgba(255, 255, 255, 0.98));
 }
 
+.banner-stat:nth-child(3),
 .summary-item:nth-child(3) {
     background: linear-gradient(135deg, rgba(238, 247, 255, 0.98), rgba(255, 255, 255, 0.98));
 }
@@ -1704,7 +1705,11 @@ textarea.form-control {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 24px;
+    margin: 0;
+}
+
+.page-content .container > .flash-list:first-child {
+    margin-top: 14px;
 }
 
 .flash {
@@ -1741,11 +1746,11 @@ textarea.form-control {
 .applications-dashboard,
 .employer-vacancies-list,
 .vacancy-applications-list {
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 .applications-dashboard .application-card {
-    width: min(760px, 100%);
+    width: 100%;
     padding: 22px 24px;
     gap: 16px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(234, 251, 247, 0.68));
@@ -1769,7 +1774,7 @@ textarea.form-control {
 }
 
 .employer-application-card {
-    width: min(980px, 100%);
+    width: 100%;
     padding: 24px;
     gap: 18px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(238, 247, 255, 0.84));
@@ -1800,7 +1805,7 @@ textarea.form-control {
 }
 
 .employer-vacancies-list .dashboard-card {
-    width: min(960px, 100%);
+    width: 100%;
 }
 
 .dashboard-salary-chip {
@@ -1992,7 +1997,6 @@ textarea.form-control {
 @media (max-width: 1024px) {
     .header-inner,
     .header-panel,
-    .footer-inner,
     .hero-main,
     .card-grid,
     .banner-stats,
@@ -2015,6 +2019,10 @@ textarea.form-control {
 
     .feature-strip,
     .steps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-inner {
         grid-template-columns: 1fr;
     }
 
@@ -2239,5 +2247,9 @@ textarea.form-control {
 
     .site-nav {
         border-radius: var(--radius-md);
+    }
+
+    .page-content .container > .flash-list:first-child {
+        margin-top: 8px;
     }
 }
