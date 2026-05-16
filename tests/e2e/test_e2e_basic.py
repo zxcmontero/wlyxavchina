@@ -9,7 +9,7 @@ pytestmark = pytest.mark.skipif(os.getenv("RUN_E2E") != "1", reason="E2E tests d
 
 def test_public_pages(page, base_url):
     page.goto(base_url)
-    assert "Кадровое агентство" in page.title()
+    assert "БайкалКадр" in page.title()
 
     page.goto(f"{base_url}/vacancies")
     # ensure vacancies page loads (look for heading)

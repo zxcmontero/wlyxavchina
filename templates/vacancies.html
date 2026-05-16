@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Вакансии | Кадровое агентство{% endblock %}
+{% block title %}Вакансии | БайкалКадр{% endblock %}
 
 {% block content %}
 <section class="section page-banner vacancies-page-banner">
@@ -29,9 +29,31 @@
 </section>
 
 <section class="section vacancies-list-section">
+    <form class="vacancies-search-form" method="get" action="{{ url_for('vacancies') }}" role="search">
+        <div class="search-field-wrap">
+            <input
+                class="search-input"
+                type="search"
+                name="q"
+                value="{{ search_query }}"
+                placeholder="Поиск по вакансиям, компании, городу…"
+                aria-label="Поиск вакансий"
+                autocomplete="off"
+            >
+            <button class="btn btn-primary search-btn" type="submit">Найти</button>
+            {% if search_query %}
+                <a class="btn btn-ghost search-clear" href="{{ url_for('vacancies') }}">Сбросить</a>
+            {% endif %}
+        </div>
+    </form>
+
     <div class="section-head section-head-stack">
         <div>
-            <h2>Список вакансий</h2>
+            {% if search_query %}
+                <h2>Результаты по запросу «{{ search_query }}»</h2>
+            {% else %}
+                <h2>Список вакансий</h2>
+            {% endif %}
         </div>
         <span class="results-count">Найдено: {{ vacancies|length }}</span>
     </div>
@@ -46,9 +68,15 @@
             {% endfor %}
         </div>
     {% else %}
-        {% set empty_message = 'Сейчас нет активных вакансий.' %}
-        {% set empty_action_href = none %}
-        {% set empty_action_text = none %}
+        {% if search_query %}
+            {% set empty_message = 'Ничего не найдено по запросу «' ~ search_query ~ '».' %}
+            {% set empty_action_href = url_for('vacancies') %}
+            {% set empty_action_text = 'Показать все вакансии' %}
+        {% else %}
+            {% set empty_message = 'Сейчас нет активных вакансий.' %}
+            {% set empty_action_href = none %}
+            {% set empty_action_text = none %}
+        {% endif %}
         {% include 'partials/_empty_state.html' %}
     {% endif %}
 </section>

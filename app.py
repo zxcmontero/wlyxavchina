@@ -456,8 +456,20 @@ def register_routes(app):
 
     @app.route("/vacancies")
     def vacancies():
-        vacancy_list = Vacancy.query.filter_by(is_active=True).order_by(Vacancy.created_at.desc()).all()
-        return render_template("vacancies.html", vacancies=vacancy_list)
+        q = request.args.get("q", "").strip()
+        query = Vacancy.query.filter_by(is_active=True)
+        if q:
+            like = f"%{q}%"
+            query = query.filter(
+                db.or_(
+                    Vacancy.title.ilike(like),
+                    Vacancy.company_name.ilike(like),
+                    Vacancy.location.ilike(like),
+                    Vacancy.description.ilike(like),
+                )
+            )
+        vacancy_list = query.order_by(Vacancy.created_at.desc()).all()
+        return render_template("vacancies.html", vacancies=vacancy_list, search_query=q)
 
     @app.route("/vacancies/<int:vacancy_id>")
     def vacancy_detail(vacancy_id):

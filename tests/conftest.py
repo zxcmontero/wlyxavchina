@@ -39,7 +39,7 @@ def app_instance(tmp_path):
             description="Поиск кандидатов, проведение первичных собеседований и работа с откликами.",
             requirements="Грамотная речь, ответственность, уверенное владение компьютером.",
             salary="от 60 000 руб.",
-            location="Москва",
+            location="Улан-Удэ",
             is_active=True,
         )
         db.session.add(vacancy)

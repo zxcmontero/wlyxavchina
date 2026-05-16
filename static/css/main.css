@@ -838,6 +838,50 @@ body.has-open-menu .nav-overlay {
     padding-top: 26px;
 }
 
+.vacancies-search-form {
+    margin-bottom: 28px;
+}
+
+.search-field-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1 1 280px;
+    min-width: 0;
+    height: 44px;
+    padding: 0 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    font-size: 0.95rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.18s;
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(29, 183, 166, 0.14);
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-btn {
+    height: 44px;
+    white-space: nowrap;
+}
+
+.search-clear {
+    height: 44px;
+    white-space: nowrap;
+}
+
 .vacancies-grid {
     gap: 22px;
 }
